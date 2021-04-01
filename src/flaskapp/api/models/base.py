@@ -9,15 +9,17 @@ class Base(db.Model):
     __abstract__ = True
 
     def __str__(self):
-        return f"{self.__class__.__qualname__}: {self.first_name if hasattr(self, 'first_name') else self.title}"
+        return f"{self.__class__.__qualname__}: {self.user_id if hasattr(self, 'user_id') else self.isbn}"
 
     def __repr__(self):
-        return f"<{self.__class__.__qualname__} object name={self.first_name if hasattr(self, 'first_name') else self.title}>"
+        return f"<{self.__class__.__qualname__} object name={self.user_id if hasattr(self, 'user_id') else self.isbn}>"
 
     def to_dict(self):
         data = {}
-        dict_keys = self.columns.keys()
+        dict_keys = self.__dict__.keys()
         for k in dict_keys:
+            if k == "_sa_instance_state":
+                continue
             value = getattr(self, k)
             data[k] = value
         return data
