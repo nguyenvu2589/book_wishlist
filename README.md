@@ -61,6 +61,42 @@ pytest tests
   - Refactor validate function
   - Let flask manage db ?
   - Maybe hash +salt password field ? 
+  - Ability to delete by id
+    - url: api/v1/book/wish_list/<int:wl_id>
 
 ## Design
 ![book_wish_list](./book_wish_list.png)
+
+## Endpoint
+1. POST: Add book to wish list
+* URL : `api/v1/book/wish_list`
+* Add book to wish list base on user_id
+```
+| Name          | Data Type | Required | Description                    | Accept value          | Example    |
+|---------------|-----------|----------|--------------------------------|-----------------------|------------|
+| isbn          | string    | True     | isbn of the book to be insert. | string type           | 123-123    |
+| user_id       | integer   | True     | User id.                       | integer bigger than 0 | 1          |
+```
+* Sample call:
+```
+curl --location --request POST 'http://localhost:5000/api/v1/book/wish_list?user_id=1&isbn=123-123'
+```
+* Response:
+- Success: 200
+```
+"Added"
+```
+- Invalid request:400
+```
+{
+    "error": [
+        "Both isbn and user_id are required - 123-123 None"
+    ]
+}
+```
+- Doesn't exist: 404
+```
+{
+    "error": "user_id - 10 doesnt exist"
+}
+```
