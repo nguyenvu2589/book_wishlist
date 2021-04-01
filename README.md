@@ -63,6 +63,8 @@ pytest tests
   - Maybe hash +salt password field ? 
   - Ability to delete by id
     - url: api/v1/book/wish_list/<int:wl_id>
+  - Better error handling
+  - Me TIRED ...
 
 ## Design
 ![book_wish_list](./book_wish_list.png)
@@ -82,20 +84,80 @@ pytest tests
 curl --location --request POST 'http://localhost:5000/api/v1/book/wish_list?user_id=1&isbn=123-123'
 ```
 * Response:
+```
 - Success: 200
-```
+
 "Added"
-```
+
 - Invalid request:400
-```
 {
     "error": [
         "Both isbn and user_id are required - 123-123 None"
     ]
 }
-```
+
 - Doesn't exist: 404
+{
+    "error": "user_id - 10 doesnt exist"
+}
 ```
+
+2. PUT: Update wish list
+* URL : `api/v1/book/wish_list`
+* update wish list using old isbn and new isbn
+```
+| Name          | Data Type | Required | Description                    | Accept value          | Example    |
+|---------------|-----------|----------|--------------------------------|-----------------------|------------|
+| old_isbn      | string    | True     | old isbn to be update.         | string type           | 123-123    |
+| new_isbn      | string    | True     | new isbn to update.            | string type           | 123-521    |
+| user_id       | integer   | True     | User id.                       | integer bigger than 0 | 1          |
+```
+* Sample call:
+```
+curl --location --request PUT 'http://localhost:5000/api/v1/book/wish_list?user_id=1&old_isbn=123-123&new_isbn=121-513'
+```
+* Response:
+```
+- Success: 200
+
+"Updated"
+
+- Invalid request:400
+{
+    "error": "user_id must be int"
+}
+
+- Doesn't exist: 404
+{
+    "error": "Either old or new isbn 123-1234 - 121-513 doesnt exist"
+}
+```
+
+3. DELETE: Remove book from wish list
+* URL : `api/v1/book/wish_list`
+* update wish list using old isbn and new isbn
+```
+| Name          | Data Type | Required | Description                    | Accept value          | Example    |
+|---------------|-----------|----------|--------------------------------|-----------------------|------------|
+| isbn          | string    | False    | isbn to be remove.             | string type           | 123-521    |
+| user_id       | integer   | True     | User id.                       | integer bigger than 0 | 1          |
+```
+* Sample call:
+```
+curl --location --request DELETE 'http://localhost:5000/api/v1/book/wish_list?user_id=1&isbn=121-513'
+```
+* Response:
+```
+- Success: 200
+
+"Delete"
+
+- Invalid request:400
+{
+    "error": "user_id must be int"
+}
+
+- Doesn't exist: 404
 {
     "error": "user_id - 10 doesnt exist"
 }
