@@ -13,7 +13,7 @@ def app():
     app = create_app(config_object=TestConfig)
 
     db = SQLAlchemy(app)
-    file = open("./init_test_db.sql")
+    file = open("./tests/integration/init_test_db.sql")
     query = text(file.read())
     db.session.execute(query)
     db.session.commit()
