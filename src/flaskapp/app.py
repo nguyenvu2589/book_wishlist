@@ -29,13 +29,11 @@ def setup_logging(APP_NAME, app):
 
 class Config(object):
     """Maps environment variables and other runtime configurations into code"""
-    APP_NAME = 'sample-kube-app' # TODO this should be the project name, likely the same as the repo it's in
+    APP_NAME = 'book_wish_list_app'
     APP_DIR = os.path.abspath(os.path.dirname(__file__))  # This directory
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
     SQLALCHEMY_DATABASE_URI="postgres://postgres@postgres:5432/zonar"
     ENV = os.environ.get('ENVIRONMENT_NAME', None)
-    SQLALCHEMY_TRACK_MODIFICATIONS = False # SQLAlchemy complains that turning this on adds significant overhead.
-                                           # Probably not useful unless you use the orm portion anyway.
 
 class TestConfig(Config):
     TESTING = True
