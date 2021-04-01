@@ -61,3 +61,6 @@ pytest tests
   - Refactor validate function
   - Let flask manage db ?
   - Maybe hash +salt password field ? 
+
+## Design
+![book_wish_list](./book_wish_list.png)
